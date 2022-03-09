@@ -48,6 +48,18 @@ class _Iphone13promaxhomeWidget  extends State<Iphone13promaxhomeWidget >{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () { Scaffold.of(context).openDrawer(); },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
+        backgroundColor: Color.fromARGB(255, 49, 49, 49),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

@@ -21,44 +21,68 @@ class HubIt extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
-      home: Iphone13promaxhomeWidget (),
+      home: homeWidget (),
     );
   }
 }
 
-class Iphone13promaxhomeWidget  extends StatefulWidget{
-  const Iphone13promaxhomeWidget ({Key? key}) : super(key: key);
+class homeWidget  extends StatefulWidget{
+  const homeWidget ({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _Iphone13promaxhomeWidget ();
+  State<StatefulWidget> createState() => _homeWidget ();
 }
 
-class _Iphone13promaxhomeWidget  extends State<Iphone13promaxhomeWidget >{
+class _homeWidget  extends State<homeWidget >{
   int _selectedIndex = 0;
-  
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+DateTime selectedDate = DateTime.now();
+
+Future<void> _selectDate(BuildContext context) async {
+  final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101));
+  if (picked != null && picked != selectedDate) {
+    setState(() {
+      selectedDate = picked;
+    });
+  }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
+        leading: IconButton(
               icon: const Icon(Icons.arrow_drop_down),
-              onPressed: () { Scaffold.of(context).openDrawer(); },
-              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-            );
-          },
-        ),
-        backgroundColor: Color.fromARGB(255, 49, 49, 49),
+              onPressed: () => _selectDate(context),
+              color: Colors.white,
+            ),
+        title : const Text("Date"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: (){}, 
+            child: const Text("User"),
+            style: TextButton.styleFrom(
+              primary: Colors.white,
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+          ),
+          IconButton(
+            onPressed: () {}, 
+            icon: const Icon(Icons.person),
+            color: Colors.white
+            ),
+        ],
+        backgroundColor: Color.fromARGB(255, 56, 56, 56),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -79,7 +103,7 @@ class _Iphone13promaxhomeWidget  extends State<Iphone13promaxhomeWidget >{
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,
         onTap: _onItemTapped,
-        backgroundColor: Color.fromARGB(255, 49, 49, 49),
+        backgroundColor: Color.fromARGB(255, 56, 56, 56),
       )
     );
   }

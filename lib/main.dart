@@ -1,8 +1,9 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 void main() => runApp(HubIt());
-
 
 class HubIt extends StatelessWidget {
   const HubIt({Key? key}) : super(key: key);
@@ -42,14 +43,15 @@ class homeWidget  extends StatefulWidget{
 }
 
 class _homeWidget  extends State<homeWidget >{
+// Index of different screens
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+//  For calendar
 DateTime selectedDate = DateTime.now();
-
 Future<void> _selectDate(BuildContext context) async {
   final DateTime? picked = await showDatePicker(
       context: context,
@@ -61,6 +63,37 @@ Future<void> _selectDate(BuildContext context) async {
       selectedDate = picked;
     });
   }
+}
+final _hubs = <Hub>[];
+bool _hub_state = false;
+
+final hub1 = Hub(title: "german class");
+
+
+// List View Widget
+Widget _buildTaskList() {
+  return ListView.separated( 
+    padding: const EdgeInsets.all(16.0),
+    separatorBuilder: (context, index) => const Divider(), 
+    itemCount: 1,
+    itemBuilder: (context, index) {
+      return SwitchListTile(
+        title: const Text("Hub name"),
+        value: _hub_state,
+        onChanged: (bool value) {
+          setState(() {
+            _hub_state = value;
+          });
+        },
+        secondary: IconButton(
+          icon: const Icon(Icons.arrow_drop_down),
+          onPressed: () {},
+        ),  
+        controlAffinity: 
+          ListTileControlAffinity.leading, 
+      );
+    },
+    );
 }
 
   @override
@@ -95,6 +128,7 @@ Future<void> _selectDate(BuildContext context) async {
         ],
         backgroundColor: Color.fromARGB(255, 56, 56, 56),
       ),
+      body : _buildTaskList(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -118,4 +152,12 @@ Future<void> _selectDate(BuildContext context) async {
       )
     );
   }
+}
+
+class Hub {
+  String title;
+  List<String> ? habbits;
+
+  Hub({required this.title, this.habbits});
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(HubIt());
 
@@ -22,8 +23,13 @@ class HubIt extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.grey,
+        primaryTextTheme:const TextTheme(
+          headline6: TextStyle(
+            color: Colors.white
+          )
+        )
       ),
-      home: homeWidget (),
+      home:const homeWidget (),
     );
   }
 }
@@ -66,7 +72,12 @@ Future<void> _selectDate(BuildContext context) async {
               onPressed: () => _selectDate(context),
               color: Colors.white,
             ),
-        title : const Text("Date"),
+        title : Text(
+          DateFormat('dd/MM/yyyy').format(selectedDate), 
+          style: const TextStyle(
+            color: Colors.white
+          )
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: (){}, 

@@ -64,21 +64,27 @@ Future<void> _selectDate(BuildContext context) async {
     });
   }
 }
-final _hubs = <Hub>[];
-bool _hub_state = false;
 
+bool _hub_state = false;
+final _hubs = <Hub> []; 
+//dummy data
 final hub1 = Hub(title: "german class");
+final hub2 = Hub(title: "gym");
 
 
 // List View Widget
 Widget _buildTaskList() {
+// dummy data
+  _hubs.add(hub1);
+  _hubs.add(hub2);
+
   return ListView.separated( 
     padding: const EdgeInsets.all(16.0),
     separatorBuilder: (context, index) => const Divider(), 
-    itemCount: 1,
+    itemCount: _hubs.length,
     itemBuilder: (context, index) {
       return SwitchListTile(
-        title: const Text("Hub name"),
+        title: Text(_hubs[index].title),
         value: _hub_state,
         onChanged: (bool value) {
           setState(() {
@@ -86,7 +92,7 @@ Widget _buildTaskList() {
           });
         },
         secondary: IconButton(
-          icon: const Icon(Icons.arrow_drop_down),
+          icon: const Icon(Icons.table_rows_rounded),
           onPressed: () {},
         ),  
         controlAffinity: 

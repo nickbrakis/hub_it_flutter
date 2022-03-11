@@ -50,57 +50,69 @@ class _homeWidget  extends State<homeWidget >{
       _selectedIndex = index;
     });
   }
-//  For calendar
-DateTime selectedDate = DateTime.now();
-Future<void> _selectDate(BuildContext context) async {
-  final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101));
-  if (picked != null && picked != selectedDate) {
-    setState(() {
-      selectedDate = picked;
-    });
+  //  For calendar
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+    buildList();
   }
-}
 
-bool _hub_state = false;
-final _hubs = <Hub> []; 
-//dummy data
-final hub1 = Hub(title: "german class");
-final hub2 = Hub(title: "gym");
+  bool _hub_state = true;
+  final _hubs = <Hub> []; 
+  //dummy data
+  final hub0 = Hub(title: "MyHub", enabled: true);
+  final hub1 = Hub(title: "German Class", enabled: true);
+  final hub2 = Hub(title: "Gym Freaks", enabled: true);
+  void buildList() {
+    _hubs.add(hub0);
+    _hubs.add(hub1);
+    _hubs.add(hub2);
 
+  }
 
-// List View Widget
-Widget _buildTaskList() {
-// dummy data
-  _hubs.add(hub1);
-  _hubs.add(hub2);
-
-  return ListView.separated( 
-    padding: const EdgeInsets.all(16.0),
-    separatorBuilder: (context, index) => const Divider(), 
-    itemCount: _hubs.length,
-    itemBuilder: (context, index) {
-      return SwitchListTile(
-        title: Text(_hubs[index].title),
-        value: _hub_state,
-        onChanged: (bool value) {
-          setState(() {
-            _hub_state = value;
-          });
-        },
-        secondary: IconButton(
-          icon: const Icon(Icons.table_rows_rounded),
-          onPressed: () {},
-        ),  
-        controlAffinity: 
-          ListTileControlAffinity.leading, 
+  // List View Widget
+  Widget _buildTaskList() {
+    return ListView.separated( 
+      padding: const EdgeInsets.all(16.0),
+      separatorBuilder: (context, index) => const Divider(), 
+      itemCount: _hubs.length,
+      itemBuilder: (context, index) {
+        IconData iconData;
+        if (_hubs[index].enabled) {
+          iconData = Icons.check_box_outlined;
+        }
+        else{
+          iconData = Icons.check_box_outline_blank_outlined;
+        }
+        return ListTile(
+          title: Text(_hubs[index].title),
+          leading: IconButton(
+            icon: Icon(iconData),
+            onPressed: () {
+              _hubs[index].enabled = !_hubs[index].enabled;
+              setState(() {});
+            },
+            tooltip: "Enable as active",
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.table_rows_rounded),
+            onPressed: () {},
+          ),  
+          // controlAffinity: 
+          //   ListTileControlAffinity.leading, 
+        );
+      },
       );
-    },
-    );
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +146,8 @@ Widget _buildTaskList() {
         ],
         backgroundColor: Color.fromARGB(255, 56, 56, 56),
       ),
-      body : _buildTaskList(),
+      body :
+        _buildTaskList(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -163,7 +176,8 @@ Widget _buildTaskList() {
 class Hub {
   String title;
   List<String> ? habbits;
+  bool  enabled;
 
-  Hub({required this.title, this.habbits});
+  Hub({required this.title, this.habbits, required this.enabled});
 
 }

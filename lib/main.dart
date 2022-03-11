@@ -37,6 +37,7 @@ class HubIt extends StatelessWidget {
 
 class homeWidget  extends StatefulWidget{
   const homeWidget ({Key? key}) : super(key: key);
+  
 
   @override
   State<StatefulWidget> createState() => _homeWidget ();
@@ -63,52 +64,47 @@ class _homeWidget  extends State<homeWidget >{
         selectedDate = picked;
       });
     }
-    buildList();
   }
-
-  bool _hub_state = true;
+  var _color = Color.fromARGB(250, 0, 196, 180);
   final _hubs = <Hub> []; 
   //dummy data
   final hub0 = Hub(title: "MyHub", enabled: true);
   final hub1 = Hub(title: "German Class", enabled: true);
   final hub2 = Hub(title: "Gym Freaks", enabled: true);
-  void buildList() {
+  void build_hubs_list() {
     _hubs.add(hub0);
     _hubs.add(hub1);
     _hubs.add(hub2);
-
+  }
+  void destroy_hubs_list() {
+    _hubs.clear();
   }
 
   // List View Widget
   Widget _buildTaskList() {
+    destroy_hubs_list();
+    build_hubs_list();
     return ListView.separated( 
       padding: const EdgeInsets.all(16.0),
       separatorBuilder: (context, index) => const Divider(), 
       itemCount: _hubs.length,
       itemBuilder: (context, index) {
-        IconData iconData;
-        if (_hubs[index].enabled) {
-          iconData = Icons.check_box_outlined;
-        }
-        else{
-          iconData = Icons.check_box_outline_blank_outlined;
-        }
         return ListTile(
           title: Text(_hubs[index].title),
-          leading: IconButton(
-            icon: Icon(iconData),
-            onPressed: () {
-              _hubs[index].enabled = !_hubs[index].enabled;
-              setState(() {});
+          leading: Switch(
+            value: _hubs[index].enabled,
+            onChanged: (bool value) {
+              setState(() {
+                _hubs[index].enabled = value;
+              });
             },
-            tooltip: "Enable as active",
+            activeColor: const Color.fromARGB(250, 0, 196, 180),
           ),
           trailing: IconButton(
             icon: const Icon(Icons.table_rows_rounded),
             onPressed: () {},
+            hoverColor : const Color.fromARGB(250, 0, 196, 180),
           ),  
-          // controlAffinity: 
-          //   ListTileControlAffinity.leading, 
         );
       },
       );
@@ -176,7 +172,7 @@ class _homeWidget  extends State<homeWidget >{
 class Hub {
   String title;
   List<String> ? habbits;
-  bool  enabled;
+  bool enabled;
 
   Hub({required this.title, this.habbits, required this.enabled});
 

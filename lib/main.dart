@@ -65,12 +65,11 @@ class _homeWidget  extends State<homeWidget >{
       });
     }
   }
-  var _color = Color.fromARGB(250, 0, 196, 180);
   final _hubs = <Hub> []; 
   //dummy data
-  final hub0 = Hub(title: "MyHub", enabled: true);
-  final hub1 = Hub(title: "German Class", enabled: true);
-  final hub2 = Hub(title: "Gym Freaks", enabled: true);
+  final hub0 = Hub(title: "MyHub", enabled: true, habbits : ["Work", "Study", "Cook"]);
+  final hub1 = Hub(title: "German Class", enabled: true, habbits : ["Studying", "Listening", "Videos"]);
+  final hub2 = Hub(title: "Gym Freaks", enabled: true, habbits : ["Workoutt", "Pre Meal", "After meal"]);
   void build_hubs_list() {
     _hubs.add(hub0);
     _hubs.add(hub1);
@@ -100,10 +99,15 @@ class _homeWidget  extends State<homeWidget >{
             },
             activeColor: const Color.fromARGB(250, 0, 196, 180),
           ),
-          trailing: IconButton(
+          trailing: DropdownButton(
+            items : _hubs[index].habbits.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
             icon: const Icon(Icons.table_rows_rounded),
-            onPressed: () {},
-            hoverColor : const Color.fromARGB(250, 0, 196, 180),
+            onChanged: null,
           ),  
         );
       },
@@ -171,9 +175,9 @@ class _homeWidget  extends State<homeWidget >{
 
 class Hub {
   String title;
-  List<String> ? habbits;
+  List<String> habbits;
   bool enabled;
 
-  Hub({required this.title, this.habbits, required this.enabled});
+  Hub({required this.title,required this.habbits, required this.enabled});
 
 }

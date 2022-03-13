@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 void main() => runApp(HubIt());
@@ -65,19 +66,36 @@ class _homeWidget  extends State<homeWidget >{
         selectedDate = picked;
       });
     }
+    destroy_hubs_list();
+    build_hubs_list();
   }
-  void _delete_hubs (int index) {
-    setState(() {
-       _hubs.removeAt(index);
-       int _length = _hubs.length; 
-       log('hub : $_length');
-    });
+  void _delete_hubs (int idx) async{
+    bool? _delHubs = await showDialog<bool>(
+      context: context, 
+      builder: (BuildContext context) => AlertDialog(
+        content: const Text("Delete Hub ?"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, false), 
+            child: const Text('Cancel'),
+            ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true), 
+            child: const Text('Yes')
+            )
+        ],
+      )
+    );
+    if(_delHubs!) {
+      _hubs.removeAt(idx);
+      setState(() {});
+    }
+
   }
+  
 
   // List View Widget
   Widget _buildTaskList() {
-    destroy_hubs_list();
-    build_hubs_list();
     return ListView.separated( 
       shrinkWrap: true,
       padding: const EdgeInsets.all(16.0),
@@ -86,11 +104,10 @@ class _homeWidget  extends State<homeWidget >{
       itemBuilder: (context, index) {
         return ListView.builder (
           shrinkWrap: true,
-//          separatorBuilder: (context, index) => const Divider(), 
           itemCount: _hubs[index].habbits.length + 1,
           itemBuilder : (context, idx) {
             return ListTile(
-            title: idx == 0 ? Text(_hubs[index].title) : Text(_hubs[index].habbits[idx - 1]),
+            title: idx == 0 ? Text(_hubs[index].title, style: TextStyle(fontSize: 18)): Text(_hubs[index].habbits[idx - 1]),
             leading: idx == 0 ? Switch(
               value: _hubs[index].enabled,
               onChanged: (bool value) {
@@ -192,7 +209,6 @@ final hub2 = Hub(title: "Gym Freaks", enabled: true, habbits : ["Workout", "Pre 
   void destroy_hubs_list() {
     _hubs.clear();
   }
-
 class Hub {
   String title;
   List<String> habbits;

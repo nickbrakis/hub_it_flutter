@@ -1,4 +1,4 @@
-import 'dart:js';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -51,6 +51,7 @@ class _homeWidget  extends State<homeWidget >{
       _selectedIndex = index;
     });
   }
+  bool isChecked = false;
   //  For calendar
   DateTime selectedDate = DateTime.now();
   Future<void> _selectDate(BuildContext context) async {
@@ -65,18 +66,12 @@ class _homeWidget  extends State<homeWidget >{
       });
     }
   }
-  final _hubs = <Hub> []; 
-  //dummy data
-  final hub0 = Hub(title: "MyHub", enabled: true, habbits : ["Work", "Study", "Cook"]);
-  final hub1 = Hub(title: "German Class", enabled: true, habbits : ["Studying", "Listening", "Videos"]);
-  final hub2 = Hub(title: "Gym Freaks", enabled: true, habbits : ["Workoutt", "Pre Meal", "After meal"]);
-  void build_hubs_list() {
-    _hubs.add(hub0);
-    _hubs.add(hub1);
-    _hubs.add(hub2);
-  }
-  void destroy_hubs_list() {
-    _hubs.clear();
+  void _delete_hubs (int index) {
+    setState(() {
+       _hubs.removeAt(index);
+       int _length = _hubs.length; 
+       log('hub : $_length');
+    });
   }
 
   // List View Widget
@@ -84,34 +79,44 @@ class _homeWidget  extends State<homeWidget >{
     destroy_hubs_list();
     build_hubs_list();
     return ListView.separated( 
+      shrinkWrap: true,
       padding: const EdgeInsets.all(16.0),
       separatorBuilder: (context, index) => const Divider(), 
       itemCount: _hubs.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(_hubs[index].title),
-          leading: Switch(
-            value: _hubs[index].enabled,
-            onChanged: (bool value) {
-              setState(() {
-                _hubs[index].enabled = value;
-              });
-            },
-            activeColor: const Color.fromARGB(250, 0, 196, 180),
-          ),
-          trailing: DropdownButton(
-            items : _hubs[index].habbits.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            icon: const Icon(Icons.table_rows_rounded),
-            onChanged: null,
-          ),  
-        );
-      },
+        return ListView.builder (
+          shrinkWrap: true,
+//          separatorBuilder: (context, index) => const Divider(), 
+          itemCount: _hubs[index].habbits.length + 1,
+          itemBuilder : (context, idx) {
+            return ListTile(
+            title: idx == 0 ? Text(_hubs[index].title) : Text(_hubs[index].habbits[idx - 1]),
+            leading: idx == 0 ? Switch(
+              value: _hubs[index].enabled,
+              onChanged: (bool value) {
+                setState(() {
+                  _hubs[index].enabled = value;
+                });
+              },
+              activeColor: const Color.fromARGB(250, 0, 196, 180),
+            ) : Checkbox(
+              checkColor: Colors.white,
+              value: isChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  isChecked = value!;
+                });
+              },
+            ),
+            trailing: idx == 0 ? IconButton (
+              icon :const Icon(Icons.delete),
+              onPressed: () => _delete_hubs(index) ,
+              highlightColor: Colors.red,
+            ) : null 
+          );
+        },
       );
+      });  
   }
 
   @override
@@ -172,6 +177,21 @@ class _homeWidget  extends State<homeWidget >{
     );
   }
 }
+
+// Create some dummy data 
+// Hubs data struct : Obj Hubs [String title,List <String> habbits] 
+final _hubs = <Hub> []; 
+final hub0 = Hub(title: "MyHub", enabled: true, habbits : ["Work", "Study", "Cook"]);
+final hub1 = Hub(title: "German Class", enabled: true, habbits : ["Studying", "Listening", "Videos"]);
+final hub2 = Hub(title: "Gym Freaks", enabled: true, habbits : ["Workout", "Pre Meal", "After meal"]);
+  void build_hubs_list() {
+    _hubs.add(hub0);
+    _hubs.add(hub1);
+    _hubs.add(hub2);
+  }
+  void destroy_hubs_list() {
+    _hubs.clear();
+  }
 
 class Hub {
   String title;

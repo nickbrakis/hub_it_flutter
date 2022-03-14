@@ -101,26 +101,35 @@ class MySearchDelegate extends SearchDelegate {
   @override 
   Widget buildSuggestions(BuildContext context) {
     List <String> suggestions = [
-      'German Class',
-      'Gym Freaks', 
+      'Photography',
+      'Cinema', 
       'Coding',
-      'Cycling'
+      'Cycling',
+      'Reading',
+      'Trekking'
     ];
+    var listToShow; 
+    if (query.isNotEmpty) {
+      listToShow = suggestions.where((e) => e.contains(query) && e.startsWith(query)).toList();
+    }
+    else {
+      listToShow = suggestions;
+    }
 
     return ListView.builder(
-      itemCount: suggestions.length,
+      itemCount: listToShow.length,
       itemBuilder: (context, index) {
         final suggestion = suggestions[index];
-
+        var res_suggestion = listToShow[index];
         return ListTile(
-          title: Text(suggestion),
+          title: Text(res_suggestion),
           onTap: () {
-            query = suggestion;
+            query = res_suggestion;
           },
           trailing : IconButton (
             icon:const Icon(Icons.add),
             onPressed: () {
-              query = suggestion;
+              query = res_suggestion;
 
               showResults(context);
             },

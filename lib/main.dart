@@ -197,8 +197,9 @@ class _homeWidget extends State<homeWidget> {
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
           onTap: _onItemTapped,
-          backgroundColor: Color.fromARGB(255, 56, 56, 56),
-        ));
+          backgroundColor:const Color.fromARGB(255, 56, 56, 56),
+        )
+      );
   }
 }
 

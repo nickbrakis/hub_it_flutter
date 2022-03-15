@@ -75,6 +75,21 @@ class _HubsWidgetState extends State<HubsWidget> {
 }
 
 class MySearchDelegate extends SearchDelegate { 
+  List <String> suggestions = [
+      'Photography',
+      'Cinema', 
+      'Coding',
+      'Cycling',
+      'Reading',
+      'Trekking'
+    ];
+  // created widget to solve enter tap problem which takes as to buildResults
+  Widget _showHub() {
+    if (!suggestions.contains(query)) {
+      query = "Hub not exists";
+    }
+    return Center(child: Text(query));
+  }
 
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
@@ -93,21 +108,18 @@ class MySearchDelegate extends SearchDelegate {
   ];
 
   @override 
-  Widget buildResults(BuildContext context) => Center(
-    child: Text (query),
+  Widget buildResults(BuildContext context) => Container(
+    child: _showHub(),
+    color: const Color.fromARGB(255, 165, 165, 165),
+    alignment: Alignment.center,
+    height : 169,
+    margin: const EdgeInsets.all(10.0),
   );
 
 
   @override 
   Widget buildSuggestions(BuildContext context) {
-    List <String> suggestions = [
-      'Photography',
-      'Cinema', 
-      'Coding',
-      'Cycling',
-      'Reading',
-      'Trekking'
-    ];
+
     var listToShow; 
     if (query.isNotEmpty) {
       listToShow = suggestions.where((e) => e.contains(query) && e.startsWith(query)).toList();
@@ -119,18 +131,17 @@ class MySearchDelegate extends SearchDelegate {
     return ListView.builder(
       itemCount: listToShow.length,
       itemBuilder: (context, index) {
-        final suggestion = suggestions[index];
         var res_suggestion = listToShow[index];
         return ListTile(
           title: Text(res_suggestion),
           onTap: () {
             query = res_suggestion;
+            showResults(context);
           },
           trailing : IconButton (
             icon:const Icon(Icons.add),
             onPressed: () {
               query = res_suggestion;
-
               showResults(context);
             },
           ),

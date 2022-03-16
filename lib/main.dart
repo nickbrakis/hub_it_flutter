@@ -117,7 +117,7 @@ class _homeWidget extends State<homeWidget> {
             itemBuilder: (context, idx) {
               return ListTile(
                   title: idx == 0
-                      ? Text(_hubs[index].title, style: TextStyle(fontSize: 18))
+                      ? Text(_hubs[index].title, style:const TextStyle(fontSize: 18))
                       : Text(_hubs[index].habbits[idx - 1]),
                   leading: idx == 0
                       ? Switch(

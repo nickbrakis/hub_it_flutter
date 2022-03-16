@@ -32,10 +32,14 @@ class _HubsWidgetState extends State<HubsWidget> {
     });
   }
 
+
+  final _color2 = const Color.fromARGB(255, 204, 77, 77);
+  final _color1 = const Color.fromARGB(255, 112, 239, 222);
+  
+
   Widget _hubsBodyList() {
     destroyHubsList();
     buildHubsList();
-
     return Container(
       alignment: Alignment.center,
       width : double.infinity,
@@ -56,12 +60,21 @@ class _HubsWidgetState extends State<HubsWidget> {
               trailing :index == 0 ? null : Container (
                 width : 75,
                 height :32,
-                decoration: const BoxDecoration( 
-                  color: Color.fromARGB(255, 204, 77, 77),
-                  borderRadius: BorderRadius.all(Radius.circular(20))
+                decoration: BoxDecoration( 
+                  color: _hubs[index - 1].isFollow ? _color2 : _color1,
+                  borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
                 child : IconButton(
-                  icon: const Text('Unfollow', 
+                  icon: _hubs[index - 1].isFollow ? const Text('Unfollow', 
+                    textAlign: TextAlign.center, 
+                    style: TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontFamily: 'Roboto',
+                      fontSize: 14,
+                      letterSpacing: 0.25,
+                      fontWeight: FontWeight.normal,
+                      )
+                    ) : const Text('Follow', 
                     textAlign: TextAlign.center, 
                     style: TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 1),
@@ -71,7 +84,11 @@ class _HubsWidgetState extends State<HubsWidget> {
                       fontWeight: FontWeight.normal,
                       )
                     ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _hubs[index-1].isFollow = !_hubs[index-1].isFollow;
+                    });
+                  },
                 ),
               )
             );
@@ -80,6 +97,8 @@ class _HubsWidgetState extends State<HubsWidget> {
       ),
     );
   }
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -132,14 +151,47 @@ class MySearchDelegate extends SearchDelegate {
       'Coding',
       'Cycling',
       'Reading',
-      'Trekking'
+      'Trekking' 
     ];
   // created widget to solve enter tap problem which takes as to buildResults
-  Widget _showHub() {
-    if (!suggestions.contains(query)) {
-      query = "Hub not exists";
-    }
-    return Center(child: Text(query));
+ 
+  Widget _hubsSearchPage() {
+    return ListView(
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(15.0),
+      children: <Widget> [
+        Container(
+            alignment: Alignment.topCenter,
+            child: Container (
+                width : 358,
+                height : 169,
+                color: const Color.fromARGB(255, 165, 165, 165),
+                margin: const EdgeInsets.all(10.0),
+                child: !suggestions.contains(query) ? const Text("Hub not exists") : Text(query),
+              ),
+            ),
+        Container (
+          width: 358,
+          color : const Color.fromARGB(255, 165, 165, 165),
+          child : ListView(
+              shrinkWrap: true,
+              children: const <Widget> [
+                ListTile(
+                  title: Text("Top Hub's Hub.iter "),
+                  subtitle: Text("Some User"),
+                ),
+                ListTile(
+                  title: Text("Top Hub's Habbit "),
+                  subtitle: Text("Some habbit"),
+                ),
+                ListTile(
+                  title: Text("This Hubs Habbits "),
+                  subtitle: Text("Some User"),
+                ),
+              ],
+            ),
+        ),
+      ]);
   }
 
   @override
@@ -162,14 +214,7 @@ class MySearchDelegate extends SearchDelegate {
   ];
 
   @override 
-  Widget buildResults(BuildContext context) => Container(
-    child: _showHub(),
-    color: const Color.fromARGB(255, 165, 165, 165),
-    alignment: Alignment.center,
-    height : 169,
-    margin: const EdgeInsets.all(10.0),
-  );
-
+  Widget buildResults(BuildContext context) => _hubsSearchPage();
 
   @override 
   Widget buildSuggestions(BuildContext context) {
@@ -233,6 +278,7 @@ class Hub {
   String title;
   List<String> habbits;
   bool enabled;
+  bool isFollow = true;
 
   Hub({required this.title, required this.habbits, required this.enabled});
 }

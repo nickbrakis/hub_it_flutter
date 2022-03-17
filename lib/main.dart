@@ -207,14 +207,12 @@ class _homeWidget extends State<homeWidget> {
 // Hubs data struct : Obj Hubs [String title,List <String> habbits]
 final _hubs = <Hub>[];
 final hub0 =
-    Hub(title: "MyHub", enabled: true, habbits: ["Work", "Study", "Cook"]);
+    Hub(title: "MyHub", habbits: ["Work", "Study", "Cook"]);
 final hub1 = Hub(
     title: "German Class",
-    enabled: true,
     habbits: ["Studying", "Listening", "Videos"]);
 final hub2 = Hub(
     title: "Gym Freaks",
-    enabled: true,
     habbits: ["Workout", "Pre Meal", "After meal"]);
 void build_hubs_list() {
   _hubs.add(hub0);
@@ -229,7 +227,7 @@ void destroy_hubs_list() {
 class Hub {
   String title;
   List<String> habbits;
-  bool enabled;
+  bool enabled = true;
 
-  Hub({required this.title, required this.habbits, required this.enabled});
+  Hub({required this.title, required this.habbits});
 }

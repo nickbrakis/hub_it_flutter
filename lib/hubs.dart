@@ -172,12 +172,51 @@ class MySearchDelegate extends SearchDelegate {
                 width : 358,
                 height : 169,
                 margin: const EdgeInsets.all(10.0),
-                child: !suggestions.contains(query) ? const Text("Hub not exists") : Text(query),
                 decoration: BoxDecoration (
                   image: DecorationImage(
                     image: NetworkImage("assets/$query.jpg"),
                      fit: BoxFit.cover,
                     ),
+                  ),
+                child: !suggestions.contains(query) ? 
+                  const Text("Hub not exists") : 
+                  Container (
+                    decoration: const BoxDecoration(
+                      color :  Color.fromARGB(255, 165, 165, 165),
+                    ),
+                    child: ListTile (
+                      title: Text(query),
+                      trailing: Container (
+                        width : 75,
+                        height :32,
+                        decoration: BoxDecoration( 
+                          color: _hubs[hubIdx].isFollow ? _color2 : _color1,
+                          borderRadius: const BorderRadius.all(Radius.circular(20))
+                        ),
+                        child : IconButton(
+                          icon: _hubs[hubIdx].isFollow ? const Text('Unfollow', 
+                            textAlign: TextAlign.center, 
+                            style: TextStyle(
+                              color: Color.fromRGBO(0, 0, 0, 1),
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              letterSpacing: 0.25,
+                              fontWeight: FontWeight.normal,
+                              )
+                            ) : const Text('Follow', 
+                            textAlign: TextAlign.center, 
+                            style: TextStyle(
+                              color: Color.fromRGBO(0, 0, 0, 1),
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              letterSpacing: 0.25,
+                              fontWeight: FontWeight.normal,
+                              )
+                            ),
+                          onPressed: () {},
+                        ),
+                      )
+                   ),
                   ),
               ),
             ),
@@ -306,3 +345,7 @@ class Hub {
 
   Hub({required this.title, required this.habbits, required this.enabled});
 }
+
+  const _color2 =  Color.fromARGB(255, 204, 77, 77);
+  const _color1 =  Color.fromARGB(255, 112, 239, 222);
+  

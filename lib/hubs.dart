@@ -154,7 +154,9 @@ class MySearchDelegate extends SearchDelegate {
       'Cycling',
       'Reading',
       'Trekking',
-      'MyHub', 
+      'MyHub',
+      'German Class', 
+      'Gym Freaks' 
     ];
  
   Widget _hubsSearchPage() {

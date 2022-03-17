@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hub_it_app/settings.dart';
 import 'package:hub_it_app/main.dart';
@@ -151,46 +153,69 @@ class MySearchDelegate extends SearchDelegate {
       'Coding',
       'Cycling',
       'Reading',
-      'Trekking' 
+      'Trekking',
+      'MyHub', 
     ];
-  // created widget to solve enter tap problem which takes as to buildResults
  
   Widget _hubsSearchPage() {
+    int hubIdx = _hubs.indexWhere((value) => value.title == query) ; 
     return ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.all(15.0),
       children: <Widget> [
         Container(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             child: Container (
+                alignment: Alignment.bottomLeft,
                 width : 358,
                 height : 169,
-                color: const Color.fromARGB(255, 165, 165, 165),
                 margin: const EdgeInsets.all(10.0),
                 child: !suggestions.contains(query) ? const Text("Hub not exists") : Text(query),
+                decoration: BoxDecoration (
+                  image: DecorationImage(
+                    image: NetworkImage("assets/$query.jpg"),
+                     fit: BoxFit.cover,
+                    ),
+                  ),
               ),
             ),
-        Container (
-          width: 358,
-          color : const Color.fromARGB(255, 165, 165, 165),
-          child : ListView(
-              shrinkWrap: true,
-              children: const <Widget> [
-                ListTile(
-                  title: Text("Top Hub's Hub.iter "),
-                  subtitle: Text("Some User"),
-                ),
-                ListTile(
-                  title: Text("Top Hub's Habbit "),
-                  subtitle: Text("Some habbit"),
-                ),
-                ListTile(
-                  title: Text("This Hubs Habbits "),
-                  subtitle: Text("Some User"),
-                ),
-              ],
-            ),
-        ),
+        Container(
+          alignment: Alignment.center,
+          child : hubIdx != - 1 ? Container (
+            width: 358,
+            color : const Color.fromARGB(255, 165, 165, 165),
+            child : ListView(
+                shrinkWrap: true,
+                children: <Widget> [
+                  const ListTile(
+                    leading: Icon(Icons.favorite, color:  Color.fromARGB(255, 112, 239, 222)),
+                    title: Text("Top Hub's Hub.iter "),
+                    subtitle: Text("Some User"),
+                  ),
+                  const ListTile(
+                    leading: Icon(Icons.favorite, color:  Color.fromARGB(255, 112, 239, 222)),
+                    title: Text("Top Hub's Habbit "),
+                    subtitle: Text("Some habbit"),
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _hubs[hubIdx].habbits.length + 1,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: index == 0 ? const Icon(Icons.star_border_outlined, color:  Color.fromARGB(255, 112, 239, 222)) : const Icon(null),
+                        title: index == 0 ? 
+                          Text(_hubs[hubIdx].title) 
+                          :Text(_hubs[hubIdx].habbits[index-1], 
+                                style: const TextStyle(fontSize: 13),
+                                ),
+                        subtitle: null,
+                      );
+                    }
+                  ),
+                ],
+              ),
+          ) : null,
+      ),
       ]);
   }
 
@@ -218,7 +243,6 @@ class MySearchDelegate extends SearchDelegate {
 
   @override 
   Widget buildSuggestions(BuildContext context) {
-
     var listToShow; 
     if (query.isNotEmpty) {
       listToShow = suggestions.where((e) => e.contains(query) && e.startsWith(query)).toList();
@@ -226,7 +250,6 @@ class MySearchDelegate extends SearchDelegate {
     else {
       listToShow = suggestions;
     }
-
     return ListView.builder(
       itemCount: listToShow.length,
       itemBuilder: (context, index) {
@@ -247,7 +270,6 @@ class MySearchDelegate extends SearchDelegate {
         );
       }
     );
-
   }
 }
 

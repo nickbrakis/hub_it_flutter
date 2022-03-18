@@ -12,8 +12,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Settings Page"),
-      ),
+          leading: IconButton(
+            onPressed: () => {},
+            icon: const Icon(Icons.settings),
+            color: Colors.white,
+          ),
+          title: const Text("Settings",
+              style: const TextStyle(color: Colors.white)),
+          backgroundColor: Color.fromARGB(255, 56, 56, 56)),
+      backgroundColor: Color.fromARGB(255, 200, 200, 200),
     );
   }
 }

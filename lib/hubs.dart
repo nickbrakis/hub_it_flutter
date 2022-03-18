@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hub_it_app/settings.dart';
 import 'package:hub_it_app/main.dart';
 
@@ -34,11 +35,7 @@ class _HubsWidgetState extends State<HubsWidget> {
     });
   }
 
-
-  final _color2 = const Color.fromARGB(255, 204, 77, 77);
-  final _color1 = const Color.fromARGB(255, 112, 239, 222);
   
-
   Widget _hubsBodyList() {
     destroyHubsList();
     buildHubsList();
@@ -53,21 +50,21 @@ class _HubsWidgetState extends State<HubsWidget> {
         color: const Color.fromARGB(255, 165, 165, 165),
         child : ListView.separated(
           shrinkWrap: true,
-          itemCount: _hubs.length + 1,
+          itemCount: _myHubs.length + 1,
           separatorBuilder:  (context, index) => const Divider(),
           itemBuilder: (context, index) {
             return ListTile(
-              leading: index == 0 ? null : const Icon(Icons.accessibility_sharp),
-              title : index == 0 ? const Text("My Hubs", style : TextStyle(fontSize : 25)) :Text(_hubs[index - 1].title),
+              leading: index == 0 ? null : const Icon(Icons.accessibility_sharp) ,
+              title : index == 0 ? const Text("My Hubs", style : TextStyle(fontSize : 25)) : Text(_myHubs[index - 1].title),
               trailing :index == 0 ? null : Container (
                 width : 75,
                 height :32,
                 decoration: BoxDecoration( 
-                  color: _hubs[index - 1].isFollow ? _color2 : _color1,
+                  color: _myHubs[index - 1].isFollow ? _color2 : _color1,
                   borderRadius: const BorderRadius.all(Radius.circular(20))
                 ),
                 child : IconButton(
-                  icon: _hubs[index - 1].isFollow ? const Text('Unfollow', 
+                  icon: _myHubs[index - 1].isFollow ? const Text('Unfollow', 
                     textAlign: TextAlign.center, 
                     style: TextStyle(
                       color: Color.fromRGBO(0, 0, 0, 1),
@@ -88,7 +85,10 @@ class _HubsWidgetState extends State<HubsWidget> {
                     ),
                   onPressed: () {
                     setState(() {
-                      _hubs[index-1].isFollow = !_hubs[index-1].isFollow;
+                      _myHubs[index-1].isFollow = !_myHubs[index-1].isFollow;
+                      if (_myHubs.contains(_hubs[index])) {
+                        _myHubs.remove(_hubs[index]);
+                      } 
                     });
                   },
                 ),
@@ -106,20 +106,38 @@ class _HubsWidgetState extends State<HubsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hubs Page"),
+        leading: const Icon(Icons.people, 
+          color: Colors.white
+          ),
+        title: const Text("Hubs",
+          style: TextStyle( 
+            color: Colors.white
+            ),
+          ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search ,
+              color : Colors.white),
             onPressed: () {
               showSearch(
                 context: context, 
-                delegate: MySearchDelegate()
+                delegate: MySearchDelegate(),
+                useRootNavigator: false,
               );
             }, 
           )
         ],
+        backgroundColor: const Color.fromARGB(255, 56, 56, 56),
       ),
       body : _hubsBodyList(),
+      persistentFooterButtons: const <Widget>[
+        Center(
+          child: Text("Tap Hubs to Refresh !", style: TextStyle(
+            fontStyle: FontStyle.italic,
+            color: Colors.grey,
+          )),
+        )
+      ],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -161,103 +179,105 @@ class MySearchDelegate extends SearchDelegate {
  
   Widget _hubsSearchPage() {
     int hubIdx = _hubs.indexWhere((value) => value.title == query) ; 
-    return ListView(
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(15.0),
-      children: <Widget> [
-        Container(
+      return ListView(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(15.0),
+        children: <Widget> [
+          Container(
+              alignment: Alignment.center,
+              child: Container (
+                  alignment: Alignment.bottomLeft,
+                  width : 358,
+                  height : 169,
+                  margin: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration (
+                    image: DecorationImage(
+                      image: NetworkImage("assets/$query.jpg"),
+                      fit: BoxFit.cover,
+                      ),
+                    ),
+                  child: !suggestions.contains(query) ? 
+                    const Text("Hub not exists") : 
+                    Container (
+                      decoration: const BoxDecoration(
+                        color :  Color.fromARGB(255, 165, 165, 165),
+                      ),
+                      child: ListTile (
+                        title: Text(query),
+                        trailing: Container (
+                          width : 75,
+                          height :32,
+                          decoration: BoxDecoration( 
+                            color: _hubs[hubIdx].isFollow ? _color2 : _color1,
+                            borderRadius: const BorderRadius.all(Radius.circular(20))
+                          ),
+                          child : IconButton(
+                            icon: _hubs[hubIdx].isFollow ? const Text('Unfollow', 
+                              textAlign: TextAlign.center, 
+                              style: TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 1),
+                                fontFamily: 'Roboto',
+                                fontSize: 14,
+                                letterSpacing: 0.25,
+                                fontWeight: FontWeight.normal,
+                                )
+                              ) : const Text('Follow', 
+                              textAlign: TextAlign.center, 
+                              style: TextStyle(
+                                color: Color.fromRGBO(0, 0, 0, 1),
+                                fontFamily: 'Roboto',
+                                fontSize: 14,
+                                letterSpacing: 0.25,
+                                fontWeight: FontWeight.normal,
+                                )
+                              ),
+                            onPressed: () {
+                              _hubs[hubIdx].isFollow = !_hubs[hubIdx].isFollow;
+                            },
+                          ),
+                        )
+                    ),
+                    ),
+                ),
+              ),
+          Container(
             alignment: Alignment.center,
-            child: Container (
-                alignment: Alignment.bottomLeft,
-                width : 358,
-                height : 169,
-                margin: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration (
-                  image: DecorationImage(
-                    image: NetworkImage("assets/$query.jpg"),
-                     fit: BoxFit.cover,
+            child : hubIdx != - 1 ? Container (
+              width: 358,
+              color : const Color.fromARGB(255, 165, 165, 165),
+              child : ListView(
+                  shrinkWrap: true,
+                  children: <Widget> [
+                    const ListTile(
+                      leading: Icon(Icons.favorite, color:  Color.fromARGB(255, 112, 239, 222)),
+                      title: Text("Top Hub's Hub.iter "),
+                      subtitle: Text("Some User"),
                     ),
-                  ),
-                child: !suggestions.contains(query) ? 
-                  const Text("Hub not exists") : 
-                  Container (
-                    decoration: const BoxDecoration(
-                      color :  Color.fromARGB(255, 165, 165, 165),
+                    const ListTile(
+                      leading: Icon(Icons.favorite, color:  Color.fromARGB(255, 112, 239, 222)),
+                      title: Text("Top Hub's Habbit "),
+                      subtitle: Text("Some habbit"),
                     ),
-                    child: ListTile (
-                      title: Text(query),
-                      trailing: Container (
-                        width : 75,
-                        height :32,
-                        decoration: BoxDecoration( 
-                          color: _hubs[hubIdx].isFollow ? _color2 : _color1,
-                          borderRadius: const BorderRadius.all(Radius.circular(20))
-                        ),
-                        child : IconButton(
-                          icon: _hubs[hubIdx].isFollow ? const Text('Unfollow', 
-                            textAlign: TextAlign.center, 
-                            style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontFamily: 'Roboto',
-                              fontSize: 14,
-                              letterSpacing: 0.25,
-                              fontWeight: FontWeight.normal,
-                              )
-                            ) : const Text('Follow', 
-                            textAlign: TextAlign.center, 
-                            style: TextStyle(
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontFamily: 'Roboto',
-                              fontSize: 14,
-                              letterSpacing: 0.25,
-                              fontWeight: FontWeight.normal,
-                              )
-                            ),
-                          onPressed: () {},
-                        ),
-                      )
-                   ),
-                  ),
-              ),
-            ),
-        Container(
-          alignment: Alignment.center,
-          child : hubIdx != - 1 ? Container (
-            width: 358,
-            color : const Color.fromARGB(255, 165, 165, 165),
-            child : ListView(
-                shrinkWrap: true,
-                children: <Widget> [
-                  const ListTile(
-                    leading: Icon(Icons.favorite, color:  Color.fromARGB(255, 112, 239, 222)),
-                    title: Text("Top Hub's Hub.iter "),
-                    subtitle: Text("Some User"),
-                  ),
-                  const ListTile(
-                    leading: Icon(Icons.favorite, color:  Color.fromARGB(255, 112, 239, 222)),
-                    title: Text("Top Hub's Habbit "),
-                    subtitle: Text("Some habbit"),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _hubs[hubIdx].habbits.length + 1,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: index == 0 ? const Icon(Icons.star_border_outlined, color:  Color.fromARGB(255, 112, 239, 222)) : const Icon(null),
-                        title: index == 0 ? 
-                          Text(_hubs[hubIdx].title) 
-                          :Text(_hubs[hubIdx].habbits[index-1], 
-                                style: const TextStyle(fontSize: 13),
-                                ),
-                        subtitle: null,
-                      );
-                    }
-                  ),
-                ],
-              ),
-          ) : null,
-      ),
-      ]);
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _hubs[hubIdx].habbits.length + 1,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: index == 0 ? const Icon(Icons.star_border_outlined, color:  Color.fromARGB(255, 112, 239, 222)) : const Icon(null),
+                          title: index == 0 ? 
+                            Text(_hubs[hubIdx].title) 
+                            :Text(_hubs[hubIdx].habbits[index-1], 
+                                  style: const TextStyle(fontSize: 13),
+                                  ),
+                          subtitle: null,
+                        );
+                      }
+                    ),
+                  ],
+                ),
+            ) : null,
+        ),
+        ]);
   }
 
   @override
@@ -281,6 +301,7 @@ class MySearchDelegate extends SearchDelegate {
 
   @override 
   Widget buildResults(BuildContext context) => _hubsSearchPage();
+  
 
   @override 
   Widget buildSuggestions(BuildContext context) {
@@ -314,23 +335,49 @@ class MySearchDelegate extends SearchDelegate {
   }
 }
 
+// ------------------------------------ DATA --------------------------------------- //
 // Create some dummy data
 // Hubs data struct : Obj Hubs [String title,List <String> habbits]
-final _hubs = <Hub>[];
-final hub0 =
-    Hub(title: "MyHub", enabled: true, habbits: ["Work", "Study", "Cook"]);
+final hub0 = Hub(
+    title: "MyHub", 
+    habbits: ["Work", "Study", "Cook"]);
 final hub1 = Hub(
     title: "German Class",
-    enabled: true,
     habbits: ["Studying", "Listening", "Videos"]);
 final hub2 = Hub(
-    title: "Gym Freaks",
-    enabled: true,
+    title: "Gym",
     habbits: ["Workout", "Pre Meal", "After meal"]);
+final hub3 = Hub(
+    title: "Photography",
+    habbits: ["Landscapes", "Portrait", "Videos", "Photoshop"]);
+final hub4 = Hub(
+    title: "Cinema",
+    habbits: ["Movies", "Series"]);
+final hub5 = Hub(
+    title: "Coding",
+    habbits: ["Algorithms", "Data", "Work"]);
+final hub6 = Hub(
+    title: "Cycling",
+    habbits: ["Training", "Rest"]);
+final hub7 = Hub(
+    title: "Reading",
+    habbits: ["Books", "Notes"]);
+final hub8 = Hub(
+    title: "Trekking",
+    habbits: ["Running", "Mountains"]);
+
+final _hubs = <Hub>[];
+final _myHubs = <Hub>[];
 void buildHubsList() {
   _hubs.add(hub0);
   _hubs.add(hub1);
   _hubs.add(hub2);
+  _hubs.add(hub3);
+  _hubs.add(hub4);
+  _hubs.add(hub5);
+  _hubs.add(hub6);
+  _hubs.add(hub7);
+  _hubs.add(hub8);
 }
 
 void destroyHubsList() {
@@ -340,12 +387,12 @@ void destroyHubsList() {
 class Hub {
   String title;
   List<String> habbits;
-  bool enabled;
-  bool isFollow = true;
+  bool enabled = true;
+  bool isFollow = false;
 
-  Hub({required this.title, required this.habbits, required this.enabled});
+  Hub({required this.title, required this.habbits});
 }
 
-  const _color2 =  Color.fromARGB(255, 204, 77, 77);
-  const _color1 =  Color.fromARGB(255, 112, 239, 222);
+const _color2 =  Color.fromARGB(255, 204, 77, 77);
+const _color1 =  Color.fromARGB(255, 112, 239, 222);
   

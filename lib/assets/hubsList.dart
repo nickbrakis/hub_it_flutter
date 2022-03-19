@@ -21,7 +21,6 @@ class _HubsList extends State<HubsList> {
             itemCount: Variables.data.length,
             itemBuilder: (context, index) => Variables.data[index],
             padding: const EdgeInsets.symmetric(horizontal: 15.0),//create inset
-
             onReorder: (oldIndex, newIndex) =>
               setState(() {
                 if (newIndex > oldIndex) {
@@ -31,9 +30,6 @@ class _HubsList extends State<HubsList> {
                 Variables.data.insert(newIndex, element);
               }),
           );
-      //   ),
-      // ],
-      // );
   }
 }
 

@@ -165,6 +165,7 @@ class _HomeWidget extends State<HomeWidget> {
           backgroundColor: const Color.fromARGB(255, 56, 56, 56),
         ),
         body: _buildTaskList(),
+
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(

@@ -17,23 +17,19 @@ class HubsList extends StatefulWidget {
 class _HubsList extends State<HubsList> {
   @override
   Widget build(BuildContext context) {
-    return  ReorderableListView.builder( //build the HUBS to be reordable!! => the hubs are in Variables.data
-            itemCount: Variables.data.length,
-            itemBuilder: (context, index) => Variables.data[index],
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),//create inset
-
-            onReorder: (oldIndex, newIndex) =>
-              setState(() {
-                if (newIndex > oldIndex) {
-                  newIndex = newIndex - 1;
-                }
-                final element = Variables.data.removeAt(oldIndex);
-                Variables.data.insert(newIndex, element);
-              }),
-          );
-      //   ),
-      // ],
-      // );
+    return 
+      ReorderableListView.builder( //build the HUBS to be reordable!! => the hubs are in Variables.data
+        itemCount: Variables.data.length,
+        itemBuilder: (context, index) => Variables.data[index],
+        onReorder: (oldIndex, newIndex) =>
+          setState(() {
+            if (newIndex > oldIndex) {
+              newIndex = newIndex - 1;
+            }
+            final element = Variables.data.removeAt(oldIndex);
+            Variables.data.insert(newIndex, element);
+          }),
+      );
   }
 }
 

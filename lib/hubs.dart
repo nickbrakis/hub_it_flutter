@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -173,7 +174,7 @@ class MySearchDelegate extends SearchDelegate {
       'Gym Freaks' 
     ];
  
-  Widget _hubsSearchPage() {
+  Widget _hubsSearchPage(BuildContext context) {
     int hubIdx = _hubs.indexWhere((value) => value.title == query) ;
     if (hubIdx == -1) {
       query = "Hub not exists";
@@ -246,6 +247,7 @@ class MySearchDelegate extends SearchDelegate {
             alignment: Alignment.center,
             child : hubIdx != - 1 ? Container (
               width: 358,
+              height : 313,
               color : const Color.fromARGB(255, 165, 165, 165),
               child : ListView(
                   shrinkWrap: true,
@@ -279,6 +281,14 @@ class MySearchDelegate extends SearchDelegate {
                 ),
             ) : null,
         ),
+        Container (
+          alignment: Alignment.bottomCenter,
+          height: MediaQuery.of(context).size.height - 600,
+          child : const Text("Search for hubs in the top!", style: TextStyle(
+            fontStyle: FontStyle.italic,
+            color: Colors.grey,
+            )),
+          ),
         ]);
   }
 
@@ -302,7 +312,7 @@ class MySearchDelegate extends SearchDelegate {
   ];
 
   @override 
-  Widget buildResults(BuildContext context) => _hubsSearchPage();
+  Widget buildResults(BuildContext context) => _hubsSearchPage(context);
   
 
   @override 

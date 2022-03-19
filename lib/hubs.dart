@@ -122,7 +122,6 @@ class _HubsWidgetState extends State<HubsWidget> {
               showSearch(
                 context: context, 
                 delegate: MySearchDelegate(),
-                useRootNavigator: false,
               );
             }, 
           )
@@ -233,6 +232,9 @@ class MySearchDelegate extends SearchDelegate {
                               ),
                             onPressed: () {
                               _hubs[hubIdx].isFollow = !_hubs[hubIdx].isFollow;
+                              if (!_myHubs.contains(_hubs[hubIdx])) {
+                                _myHubs.add(_hubs[hubIdx]);
+                              }
                             },
                           ),
                         )

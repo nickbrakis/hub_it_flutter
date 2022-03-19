@@ -35,7 +35,7 @@ class _HubsList extends State<HubsList> {
 
 List<Widget> generateHubs(int numberOfItems) {
   final List<String> hubNames=["NTUA Photography Club", "Prometheus Racing", 
-          "NTUA Billiards' Club", "IEEE NTUA Branch", "White Noise", "Snorkeling Athens", "Rock Climbing",
+          "NTUA Billiard's Club", "IEEE NTUA Branch", "White Noise", "Snorkeling Athens", "Rock Climbing",
           "Horse Riding", "Cooking Mastercourse"];
 
   return List<Widget>.generate(2*numberOfItems, (int index) {

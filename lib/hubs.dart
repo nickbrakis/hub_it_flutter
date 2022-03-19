@@ -86,9 +86,6 @@ class _HubsWidgetState extends State<HubsWidget> {
                   onPressed: () {
                     setState(() {
                       _myHubs[index-1].isFollow = !_myHubs[index-1].isFollow;
-                      if (_myHubs.contains(_hubs[index])) {
-                        _myHubs.remove(_hubs[index]);
-                      } 
                     });
                   },
                 ),
@@ -177,7 +174,10 @@ class MySearchDelegate extends SearchDelegate {
     ];
  
   Widget _hubsSearchPage() {
-    int hubIdx = _hubs.indexWhere((value) => value.title == query) ; 
+    int hubIdx = _hubs.indexWhere((value) => value.title == query) ;
+    if (hubIdx == -1) {
+      query = "Hub not exists";
+    } 
       return ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.all(15.0),

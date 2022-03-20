@@ -3,8 +3,6 @@ import 'package:hub_it_app/screens/hubsScreen.dart';
 import 'package:hub_it_app/screens/homeScreen.dart';
 import 'package:hub_it_app/assets/naviBar.dart';
 
-// import 'package:hub_it_app/main.dart';
-
 class SettingsWidget extends StatefulWidget {
   const SettingsWidget({Key? key}) : super(key: key);
 

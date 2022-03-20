@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 import "package:flutter/material.dart";
 import 'package:hub_it_app/assets/hubsList.dart';
-import 'package:hub_it_app/assets/habitsList.dart';
 import 'package:hub_it_app/screens/hubsScreen.dart';
 import 'package:hub_it_app/screens/settingsScreen.dart';
 import 'package:hub_it_app/assets/naviBar.dart';
@@ -79,7 +78,14 @@ class _HubitHomeScreen extends State<HubitHomeScreen>{ //actually starting here
           )
         ]
       ),
-      
+      persistentFooterButtons: const <Widget>[
+        Center(
+          child: Text("Long press on your habbits, to delete!", style: TextStyle(
+            fontStyle: FontStyle.italic,
+            color: Colors.grey,
+          )),
+        )
+      ],
       bottomNavigationBar: BottomNavigationBar(
           items: Navi.naviList,
           currentIndex: _selectedIndex,

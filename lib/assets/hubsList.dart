@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 import "package:flutter/material.dart";
-import 'habitsList.dart';
+import 'package:hub_it_app/assets/habitsList.dart';
 
 class Variables{
   static List<bool> gray = List.filled(100,false); //holds the gray state of hubs
-  static final List<Widget> data = generateHubs(18); //creates hubs
+  static final List<Widget> data = generateHubs(5); //creates hubs
 }
 
 class HubsList extends StatefulWidget {
@@ -17,6 +17,7 @@ class HubsList extends StatefulWidget {
 class _HubsList extends State<HubsList> {
   @override
   Widget build(BuildContext context) {
+    
     return  ReorderableListView.builder( //build the HUBS to be reordable!! => the hubs are in Variables.data
             itemCount: Variables.data.length,
             itemBuilder: (context, index) => Variables.data[index],
@@ -34,8 +35,8 @@ class _HubsList extends State<HubsList> {
 }
 
 List<Widget> generateHubs(int numberOfItems) {
-  final List<String> hubNames=["NTUA Photography Club", "Prometheus Racing", 
-          "NTUA Billiard's Club", "IEEE NTUA Branch", "White Noise", "Snorkeling Athens", "Rock Climbing",
+  final List<String> hubNames=[ "Prometheus Racing", 
+          "NTUA Billiard's Club","NTUA Photography Club", "IEEE NTUA Branch", "White Noise", "Snorkeling Athens", "Rock Climbing",
           "Horse Riding", "Cooking Mastercourse"];
 
   return List<Widget>.generate(2*numberOfItems, (int index) {
@@ -53,6 +54,17 @@ List<Widget> generateHubs(int numberOfItems) {
   });
 }
 
+final myHabitsList =  <Widget>[
+                  const Divider(height: 5, color: Color.fromARGB(255, 0, 0, 0)),
+                  const HubTask(habitTitle: Text("Cycling"), addTask: false,ind: 1, mytask: true,),
+                  const Divider(indent: 60, height: 5, color: Color.fromARGB(255, 3, 7, 20)),
+                  const HubTask(habitTitle: Text("Walk the dog"), addTask: false,ind: 3,mytask: true,),
+                  const Divider(indent: 60, height: 5, color: Color.fromARGB(255, 3, 7, 20)),
+                  const HubTask(habitTitle: Text("Do homework"), addTask: false,ind: 5,mytask: true,),
+                  const Divider(indent: 60, height: 5, color: Color.fromARGB(255, 3, 7, 20)),
+                  const HubTask(habitTitle: Text("Add a task", style: TextStyle(fontStyle: FontStyle.italic)), addTask: true)
+                ];
+
 class HubTile extends StatefulWidget{ //the complete Hub (contains in another function the expanded habbits
   final String hubTitle;
   final bool myHub;
@@ -67,8 +79,10 @@ class HubTile extends StatefulWidget{ //the complete Hub (contains in another fu
 class _HubTile extends State<HubTile>{
   bool isSwitched=true;
   bool isExpanded=false;
+
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       decoration: BoxDecoration(//tile becomes gray on switch Ican have up to 100 hubs-> each hub has an ondex i
         color: Variables.gray[widget.i]? Colors.grey :Colors.white, 
@@ -118,8 +132,8 @@ class _HubTile extends State<HubTile>{
             Variables.gray[widget.i]
               ?<Widget>[const SizedBox.shrink()]
               :(widget.i==1)
-                ?myHabitsList//create my tasks list
-                :genericHubList, //create the task list
+                ?myHabitsList
+                :theBestGenerator(7, false, widget.i~/2-1), //create the task list
         ),
     );
   }

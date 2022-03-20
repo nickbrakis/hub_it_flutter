@@ -10,8 +10,6 @@ class HubsWidget extends StatefulWidget {
   State<StatefulWidget> createState() => _HubsWidgetState();
 }
 
-
-
 class _HubsWidgetState extends State<HubsWidget> {
   // Index of different screens
   int _selectedIndex = 0;
@@ -33,7 +31,6 @@ class _HubsWidgetState extends State<HubsWidget> {
       }
     });
   }
-
 
   Widget  _hubsBodyList() {
     destroyHubsList();
@@ -281,7 +278,10 @@ class MySearchDelegate extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) => IconButton(
     icon: const Icon(Icons.arrow_back),
-    onPressed: () => close(context, null),
+    onPressed: () {
+      close(context, null);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HubsWidget()));
+    }
   ); 
 
   @override 

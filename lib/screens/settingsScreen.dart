@@ -50,7 +50,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             ),
             const Padding(padding: EdgeInsets.all(20.0)),
             Padding(
-              padding: const EdgeInsets.only(bottom: 40),
+              padding: const EdgeInsets.only(bottom: 33),
               child: signOut(),
             ),
           ]),
@@ -69,9 +69,11 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           color: const Color.fromARGB(255, 200, 200, 200),
                           width: 5,
                         ),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(50),
                       ),
-                      child: Text(_ownedhubs[index].title),
+                      child: Center(child : Text(_ownedhubs[index].title)),
+                      width : 150,
+                      height : 30,
                     ),
                     trailing: const IconButton(icon: Icon(Icons.edit), onPressed: null),
                   );
@@ -104,7 +106,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             ), 
               child: Row(
                 children: const <Widget>[
-                  Text("Sign Out", style: TextStyle(fontSize: 15, color:Color.fromARGB(255, 51, 51, 51)),), // <-- Text
+                  Text("Sign Out", style: TextStyle(fontSize: 20, color:Color.fromARGB(255, 51, 51, 51)),), // <-- Text
                   SizedBox(width: 6),
                   Icon(Icons.logout, color:Color.fromARGB(255, 51, 51, 51), size: 22),
                 ],
@@ -120,6 +122,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         appBar: AppBar(
             title: const Text("Settings", style: TextStyle(color: Colors.white)),
             backgroundColor: const Color.fromARGB(255, 56, 56, 56),
+            leading :const Icon(Icons.settings, color: Colors.white,),
         ),
         backgroundColor: const Color.fromARGB(255, 150, 150, 150),
         body: _SettingsBody(),

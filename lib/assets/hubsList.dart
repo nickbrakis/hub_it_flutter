@@ -53,7 +53,7 @@ List<Widget> generateHubs(int numberOfItems) {
   });
 }
 
-class HubTile extends StatefulWidget{
+class HubTile extends StatefulWidget{ //the complete Hub (contains in another function the expanded habbits
   final String hubTitle;
   final bool myHub;
   final int i;
@@ -118,8 +118,8 @@ class _HubTile extends State<HubTile>{
             Variables.gray[widget.i]
               ?<Widget>[const SizedBox.shrink()]
               :(widget.i==1)
-                ?const <Widget>[ExpandedTasksList(tasks: 9, myhub: true)]//create my tasks list
-                :const <Widget>[ExpandedTasksList(tasks: 8, myhub: false)], //create the task list
+                ?myHabitsList//create my tasks list
+                :genericHubList, //create the task list
         ),
     );
   }

@@ -38,8 +38,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       child: Column(
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-            Container(
-              child: Column(
+            Container( 
+              child: Column(//COLUMN 1
                 children: [
                   Navi.appBarLeading(false, false),
                   const Text("someemail@mail.com", style: TextStyle(color: Color.fromARGB(255, 100, 100, 100))),
@@ -48,11 +48,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
               ),
               margin: const EdgeInsets.all(15),
             ),
-            signOut(),
+            const Padding(padding: EdgeInsets.all(20.0)),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 40),
+              child: signOut(),
+            ),
           ]),
           const Text("Manage Your Hubs", style: TextStyle(fontSize: 20)),
           const Divider(),
-          Container(
+          Container( 
             child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: _ownedhubs.length,
@@ -82,10 +86,8 @@ class _SettingsWidgetState extends State<SettingsWidget> {
   Widget signOut () {
     const Color light=Color.fromARGB(255, 241, 241, 241);
     bool hovered=false;
-    var data = 'User';
     return Row(
     children: <Widget> [
-            // intend? const SizedBox(width: 12): const SizedBox.shrink(),
             ElevatedButton(
               onPressed: () {
                 setState(() {
@@ -102,9 +104,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             ), 
               child: Row(
                 children: const <Widget>[
-                  Text("Sign Out", style: TextStyle(fontSize: 20, color:Colors.black),), // <-- Text
-                  SizedBox(width: 12),
-                  Icon(Icons.logout, color:Colors.black, size: 25),
+                  Text("Sign Out", style: TextStyle(fontSize: 15, color:Color.fromARGB(255, 51, 51, 51)),), // <-- Text
+                  SizedBox(width: 6),
+                  Icon(Icons.logout, color:Color.fromARGB(255, 51, 51, 51), size: 22),
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub_it_app/screens/settingsScreen.dart';
 import 'package:hub_it_app/screens/homeScreen.dart';
+import 'package:hub_it_app/assets/naviBar.dart';
 
 class HubsWidget extends StatefulWidget {
   const HubsWidget({Key? key}) : super(key: key);
@@ -8,6 +9,8 @@ class HubsWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HubsWidgetState();
 }
+
+
 
 class _HubsWidgetState extends State<HubsWidget> {
   // Index of different screens
@@ -99,17 +102,13 @@ class _HubsWidgetState extends State<HubsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.people, 
-          color: Colors.white
-          ),
-        title: const Text("Hubs",
-          style: TextStyle( 
-            color: Colors.white
-            ),
-          ),
+        leadingWidth: 140,
+        leading: Navi.appBarLeading(true,true),
+         
+        backgroundColor: const Color.fromARGB(255, 56, 56, 56),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search ,
+            icon: const Icon(Icons.search , size: 30,
               color : Colors.white),
             onPressed: () {
               showSearch(
@@ -117,11 +116,13 @@ class _HubsWidgetState extends State<HubsWidget> {
                 delegate: MySearchDelegate(),
               );
             }, 
-          )
+          ),
+          const SizedBox(width: 20),
         ],
-        backgroundColor: const Color.fromARGB(255, 56, 56, 56),
       ),
+      
       body : _hubsBodyList(),
+
       persistentFooterButtons: const <Widget>[
         Center(
           child: Text("Tap Hubs to Refresh !", style: TextStyle(
@@ -130,21 +131,9 @@ class _HubsWidgetState extends State<HubsWidget> {
           )),
         )
       ],
+      
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Hubs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
+        items: Navi.naviList,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white,

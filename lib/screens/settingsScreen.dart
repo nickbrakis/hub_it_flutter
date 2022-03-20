@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub_it_app/screens/hubsScreen.dart';
 import 'package:hub_it_app/screens/homeScreen.dart';
+import 'package:hub_it_app/assets/naviBar.dart';
 
 // import 'package:hub_it_app/main.dart';
 
@@ -11,87 +12,7 @@ class SettingsWidget extends StatefulWidget {
   State<StatefulWidget> createState() => _SettingsWidgetState();
 }
 
-Widget _SettingsBody() {
-  return Center(
-    child: Column(
-      children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Container(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 200, 200, 200),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 200, 200, 200),
-                          width: 5,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                          child:
-                              Row(children: const [Text("User", style: TextStyle(fontSize: 20)), Icon(Icons.person)])),
-                    ),
-                    const IconButton(onPressed: null, icon: Icon(Icons.edit, color: Color(0xff07dbca)))
-                  ],
-                ),
-                const Text("someemail@mail.com", style: TextStyle(color: Color.fromARGB(255, 100, 100, 100))),
-                const Text("Password:*********", style: TextStyle(color: Color.fromARGB(255, 100, 100, 100)))
-              ],
-            ),
-            margin: const EdgeInsets.all(15),
-          ),
-          Container(
-            child: Row(children: [
-              Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 200, 200, 200),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 200, 200, 200),
-                      width: 5,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: const [
-                      TextButton(onPressed: null, child: Text("Sign out", style: TextStyle(fontSize: 20))),
-                      Icon(Icons.logout)
-                    ],
-                  ))
-            ]),
-            margin: const EdgeInsets.all(15),
-          )
-        ]),
-        const Text("Manage Your Hubs", style: TextStyle(fontSize: 20)),
-        const Divider(),
-        Container(
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: _ownedhubs.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 200, 200, 200),
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 200, 200, 200),
-                        width: 5,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Text(_ownedhubs[index].title),
-                  ),
-                  trailing: const IconButton(icon: Icon(Icons.edit), onPressed: null),
-                );
-              }),
-          margin: const EdgeInsets.all(15),
-        ),
-      ],
-    ),
-  );
-}
+
 
 class _SettingsWidgetState extends State<SettingsWidget> {
   int _selectedIndex = 2;
@@ -112,31 +33,96 @@ class _SettingsWidgetState extends State<SettingsWidget> {
       }
     });
   }
+  Widget _SettingsBody() {
+    return Center(
+      child: Column(
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Container(
+              child: Column(
+                children: [
+                  Navi.appBarLeading(false, false),
+                  const Text("someemail@mail.com", style: TextStyle(color: Color.fromARGB(255, 100, 100, 100))),
+                  const Text("Password:*********", style: TextStyle(color: Color.fromARGB(255, 100, 100, 100)))
+                ],
+              ),
+              margin: const EdgeInsets.all(15),
+            ),
+            signOut(),
+          ]),
+          const Text("Manage Your Hubs", style: TextStyle(fontSize: 20)),
+          const Divider(),
+          Container(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: _ownedhubs.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 200, 200, 200),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 200, 200, 200),
+                          width: 5,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(_ownedhubs[index].title),
+                    ),
+                    trailing: const IconButton(icon: Icon(Icons.edit), onPressed: null),
+                  );
+                }),
+            margin: const EdgeInsets.all(15),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget signOut () {
+    const Color light=Color.fromARGB(255, 241, 241, 241);
+    bool hovered=false;
+    var data = 'User';
+    return Row(
+    children: <Widget> [
+            // intend? const SizedBox(width: 12): const SizedBox.shrink(),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  hovered=!hovered;
+                });
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  )
+                ),  
+              backgroundColor: hovered? MaterialStateProperty.all<Color>(Colors.black): MaterialStateProperty.all<Color>(light),
+            ), 
+              child: Row(
+                children: const <Widget>[
+                  Text("Sign Out", style: TextStyle(fontSize: 20, color:Colors.black),), // <-- Text
+                  SizedBox(width: 12),
+                  Icon(Icons.logout, color:Colors.black, size: 25),
+                ],
+              ),
+            ),
+          ]
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            leading: const Icon(Icons.settings, color: Colors.white),
             title: const Text("Settings", style: TextStyle(color: Colors.white)),
-            backgroundColor: const Color.fromARGB(255, 56, 56, 56)),
+            backgroundColor: const Color.fromARGB(255, 56, 56, 56),
+        ),
         backgroundColor: const Color.fromARGB(255, 150, 150, 150),
         body: _SettingsBody(),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Hubs',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
+          items:  Navi.naviList,
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,

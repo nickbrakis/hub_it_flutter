@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'package:hub_it_app/assets/hubsList.dart';
 import 'package:hub_it_app/screens/hubsScreen.dart';
 import 'package:hub_it_app/screens/settingsScreen.dart';
+import 'package:hub_it_app/assets/naviBar.dart';
 
 import 'package:intl/intl.dart';
 
@@ -64,33 +65,7 @@ class _HubitHomeScreen extends State<HubitHomeScreen>{ //actually starting here
           onPressed: () => selectDate(context),
           tooltip: 'Calendar',
         ),
-        actions:  <Widget>[
-          Row(children: <Widget> [
-            ElevatedButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  )
-                ),  
-              backgroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 153, 153, 153)),
-            ), 
-            
-              onPressed: () {},
-              child: Row(
-                children: const <Widget>[
-                  Text('User', style: TextStyle(fontSize: 20, color: Colors.white),), // <-- Text
-                  SizedBox(
-                    width: 12,
-                  ),
-                  ImageIcon(AssetImage('assets/images/user.png'), color: Colors.white, size: 25),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-          ]
-          ),
-        ],
+        actions:  Navi.appBarActions,
         backgroundColor: const Color.fromARGB(255, 56, 56, 56),
       ),
 
@@ -105,20 +80,7 @@ class _HubitHomeScreen extends State<HubitHomeScreen>{ //actually starting here
       ),
 
       bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Hubs',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
+          items: Navi.naviList,
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,

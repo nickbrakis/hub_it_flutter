@@ -1,6 +1,7 @@
 
 import "package:flutter/material.dart";
 import 'package:hub_it_app/screens/homeScreen.dart';
+import 'package:hub_it_app/screens/hubsScreen.dart';
 void main() => runApp(const Hubit());
 
 class Hubit extends StatelessWidget {

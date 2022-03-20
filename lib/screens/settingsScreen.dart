@@ -39,7 +39,10 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             Container( 
               child: Column(//COLUMN 1
                 children: [
-                  Navi.appBarLeading(false, false),
+                  Padding(
+                    child : Navi.appBarLeading(false, false),
+                    padding: const EdgeInsets.only(bottom: 5),
+                    ),
                   const Text("someemail@mail.com", style: TextStyle(color: Color.fromARGB(255, 100, 100, 100))),
                   const Text("Password:*********", style: TextStyle(color: Color.fromARGB(255, 100, 100, 100)))
                 ],
@@ -48,7 +51,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             ),
             const Padding(padding: EdgeInsets.all(20.0)),
             Padding(
-              padding: const EdgeInsets.only(bottom: 33),
+              padding: const EdgeInsets.only(bottom: 38),
               child: signOut(),
             ),
           ]),
@@ -70,7 +73,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         borderRadius: BorderRadius.circular(50),
                       ),
                       child: Center(child : Text(_ownedhubs[index].title)),
-                      width : 150,
+                      width : 220,
                       height : 30,
                     ),
                     trailing: const IconButton(icon: Icon(Icons.edit), onPressed: null),
@@ -136,7 +139,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
 }
 
 //dummy owned hubs
-final myownedhub1 = Hub(title: "MyHub", habbits: ["Work", "Study", "Cook"]);
-final myownedhub2 = Hub(title: "MyHub2", habbits: ["Read a Book", "Go for a Walk", "Meditate"]);
+final myownedhub1 = Hub(title: "NTUA Photography Club", habbits: ["Portraits", "Landscape", "Videos"]);
+final myownedhub2 = Hub(title: "White Noise", habbits: ["Read a Book", "Go for a Walk", "Meditate"]);
 
 var _ownedhubs = <Hub>[myownedhub1, myownedhub2];

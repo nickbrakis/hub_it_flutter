@@ -120,15 +120,6 @@ class _HubsWidgetState extends State<HubsWidget> {
       
       body : _hubsBodyList(),
 
-      persistentFooterButtons: const <Widget>[
-        Center(
-          child: Text("Tap Hubs to Refresh !", style: TextStyle(
-            fontStyle: FontStyle.italic,
-            color: Colors.grey,
-          )),
-        )
-      ],
-      
       bottomNavigationBar: BottomNavigationBar(
         items: Navi.naviList,
         currentIndex: _selectedIndex,
@@ -360,9 +351,26 @@ final hub7 = Hub(
 final hub8 = Hub(
     title: "Trekking",
     habbits: ["Running", "Mountains"]);
+final mhub1 = Hub(
+    title: "NTUA Photography Club",
+    habbits: ["Landscapes", "Portrait", "Videos"],
+    isFollow: true);
+final mhub2 = Hub(
+    title: "IEEE NTUA Branch",
+    habbits: ["Algorithms", "Data", "Work"],
+    isFollow: true);
+final mhub3 = Hub(
+    title: "White Noise",
+    habbits: ["Books", "Notes", "Testing"],
+    isFollow: true);
+final mhub4 = Hub(
+    title: "Snorkeling Athens",
+    habbits: ["Trailing", "Rest", "Mealprep"],
+    isFollow: true);
+
 
 final _hubs = <Hub>[];
-final _myHubs = <Hub>[];
+final _myHubs = <Hub>[mhub1, mhub2, mhub3, mhub4];
 void buildHubsList() {
   _hubs.add(hub0);
   _hubs.add(hub1);
@@ -383,9 +391,9 @@ class Hub {
   String title;
   List<String> habbits;
   bool enabled = true;
-  bool isFollow = false;
+  bool isFollow = true;
 
-  Hub({required this.title, required this.habbits});
+  Hub({required this.title, required this.habbits, this.isFollow = false});
 }
 
 const _color2 =  Color.fromARGB(255, 204, 77, 77);
